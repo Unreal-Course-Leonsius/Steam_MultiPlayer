@@ -1,0 +1,20 @@
+
+
+[2019-08-23 11:45:57] Log session started
+[2019-08-23 11:45:57] [0,0] SetSteamID( [U:1:0] )
+[2019-08-23 11:45:57] CCMInterface::OnNetworkDeviceStateChange -- Saw device up, connecting to Steam
+[2019-08-23 11:45:57] CCMInterface::OnNetworkDeviceStateChange -- Saw device up, connecting to Steam
+[2019-08-23 11:45:57] CCMInterface::OnNetworkDeviceStateChange -- Saw device up, connecting to Steam
+[2019-08-23 11:45:57] CCMInterface::OnNetworkDeviceStateChange -- Saw device up, connecting to Steam
+[2019-08-23 11:45:57] CCMInterface::OnNetworkDeviceStateChange -- Saw device up, connecting to Steam
+[2019-08-23 11:45:57] CCMInterface::OnNetworkDeviceStateChange -- Saw device up, connecting to Steam
+
+
+[2019-08-23 11:48:27] Log session started
+[2019-08-23 11:48:27] [0,0] SetSteamID( [U:1:0] )
+[2019-08-23 11:48:27] CCMInterface::OnNetworkDeviceStateChange -- Saw device up, connecting to Steam
+[2019-08-23 11:48:27] CCMInterface::OnNetworkDeviceStateChange -- Saw device up, connecting to Steam
+[2019-08-23 11:48:27] CCMInterface::OnNetworkDeviceStateChange -- Saw device up, connecting to Steam
+[2019-08-23 11:48:27] CCMInterface::OnNetworkDeviceStateChange -- Saw device up, connecting to Steam
+[2019-08-23 11:48:27] CCMInterface::OnNetworkDeviceStateChange -- Saw device up, connecting to Steam
+[2019-08-23 11:48:27] CCMInterface::OnNetworkDeviceStateChange -- Saw device up, connecting to Steam

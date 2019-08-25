@@ -125,6 +125,11 @@ CRemotePlayList::CRemotePlayList( IGameEngine *pGameEngine ) : m_pGameEngine( pG
 	m_nNumControllers = 0;
 }
 
+/*CRemotePlayList::CRemotePlayList(IGameEngine *pGameEngine)
+{
+	//m_pGameEngine = pGameEngine;
+}*/
+
 
 //-----------------------------------------------------------------------------
 // Purpose: Run a frame for the CRemotePlayList

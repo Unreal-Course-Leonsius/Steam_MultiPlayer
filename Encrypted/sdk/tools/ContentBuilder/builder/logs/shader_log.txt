@@ -1,0 +1,18 @@
+
+
+[2019-08-23 11:45:57] Attempting to find current bucket; temporary dir: G:\Unreal Project\MULTIPLAYER\Steam_MultiPlayer\Encrypted\sdk\tools\ContentBuilder\builder\shader_cache_temp_dir_gl_64
+[2019-08-23 11:45:57] Creating shader cache directory: G:\Unreal Project\MULTIPLAYER\Steam_MultiPlayer\Encrypted\sdk\tools\ContentBuilder\builder\shader_cache_temp_dir_gl_64
+[2019-08-23 11:45:57] Unknown shader cache type, ignoring.
+[2019-08-23 11:45:57] Attempting to find current bucket; temporary dir: G:\Unreal Project\MULTIPLAYER\Steam_MultiPlayer\Encrypted\sdk\tools\ContentBuilder\builder\shader_cache_temp_dir_gl_32
+[2019-08-23 11:45:57] Creating shader cache directory: G:\Unreal Project\MULTIPLAYER\Steam_MultiPlayer\Encrypted\sdk\tools\ContentBuilder\builder\shader_cache_temp_dir_gl_32
+[2019-08-23 11:45:57] Unknown shader cache type, ignoring.
+[2019-08-23 11:45:58] Found 0 current buckets:
+
+
+[2019-08-23 11:48:27] Attempting to find current bucket; temporary dir: G:\Unreal Project\MULTIPLAYER\Steam_MultiPlayer\Encrypted\sdk\tools\ContentBuilder\builder\shader_cache_temp_dir_gl_64
+[2019-08-23 11:48:27] Creating shader cache directory: G:\Unreal Project\MULTIPLAYER\Steam_MultiPlayer\Encrypted\sdk\tools\ContentBuilder\builder\shader_cache_temp_dir_gl_64
+[2019-08-23 11:48:27] Unknown shader cache type, ignoring.
+[2019-08-23 11:48:28] Attempting to find current bucket; temporary dir: G:\Unreal Project\MULTIPLAYER\Steam_MultiPlayer\Encrypted\sdk\tools\ContentBuilder\builder\shader_cache_temp_dir_gl_32
+[2019-08-23 11:48:28] Creating shader cache directory: G:\Unreal Project\MULTIPLAYER\Steam_MultiPlayer\Encrypted\sdk\tools\ContentBuilder\builder\shader_cache_temp_dir_gl_32
+[2019-08-23 11:48:28] Unknown shader cache type, ignoring.
+[2019-08-23 11:48:28] Found 0 current buckets:

@@ -17,9 +17,15 @@ class CRemotePlayListMenu;
 
 class CRemotePlayList
 {
+
+private:
+	// Engine
+	IGameEngine *m_pGameEngine;
+
 public:
 	// Constructor
-	CRemotePlayList( IGameEngine *pGameEngine );
+	CRemotePlayList(IGameEngine *pGameEngine);
+
 
 	// Run a frame
 	void RunFrame();
@@ -30,13 +36,13 @@ public:
 	// handles input from Remote Play session list menu 
 	void OnMenuSelection( RemotePlayListMenuItem_t selection );
 
-private:
+protected:
 	STEAM_CALLBACK( CRemotePlayList, OnRemotePlaySessionConnected, SteamRemotePlaySessionConnected_t );
 	STEAM_CALLBACK( CRemotePlayList, OnRemotePlaySessionDisconnected, SteamRemotePlaySessionDisconnected_t );
 
 private:
 	// Engine
-	IGameEngine *m_pGameEngine;
+	//IGameEngine *m_pGameEngine;
 
 	CRemotePlayListMenu *m_pRemotePlayListMenu;
 	int m_nNumControllers;

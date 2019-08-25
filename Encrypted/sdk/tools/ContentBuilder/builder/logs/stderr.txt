@@ -1,0 +1,1 @@
+\src\tier0\threadtools.cpp (3225) : Assertion Failed: Illegal termination of worker thread 'Thread(0x0F66A4B8/0x000004C4/0x'

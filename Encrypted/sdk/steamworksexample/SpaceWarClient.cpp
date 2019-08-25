@@ -25,6 +25,7 @@
 #include "Inventory.h"
 #include "steam/steamencryptedappticket.h"
 #include "RemotePlay.h"
+#include "RemotePlay.cpp"
 #ifdef WIN32
 #include <direct.h>
 #else
@@ -32,7 +33,7 @@
 #include <unistd.h>
 #define _getcwd getcwd
 #endif
-
+//#include "RemotePlay.cpp"
 
 CSpaceWarClient *g_pSpaceWarClient = NULL;
 CSpaceWarClient* SpaceWarClient() { return g_pSpaceWarClient; }

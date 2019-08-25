@@ -26,6 +26,7 @@
 #endif
 
 #include "SpaceWarClient.h"
+#include "SpaceWar.h"
 
 //-----------------------------------------------------------------------------
 // Purpose: Wrapper around SteamAPI_WriteMiniDump which can be used directly 
