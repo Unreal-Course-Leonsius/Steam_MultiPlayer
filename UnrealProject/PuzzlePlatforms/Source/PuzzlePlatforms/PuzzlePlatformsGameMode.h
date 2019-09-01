@@ -13,6 +13,12 @@ class APuzzlePlatformsGameMode : public AGameModeBase
 
 public:
 	APuzzlePlatformsGameMode();
+
+	//virtual void BeginPlay() override;
+
+private:
+
+	//static int32 GetObjectReferanceCount(TArray<UObject*>* OutReferredToObjects);
 };
 
 

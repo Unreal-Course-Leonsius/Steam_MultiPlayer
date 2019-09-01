@@ -26,5 +26,6 @@ public:
 	void SetGameMode();
 	
 	void SetGameInstanceInterface(IMenuInterface* GameInstaceInterface);
+
 	
 };

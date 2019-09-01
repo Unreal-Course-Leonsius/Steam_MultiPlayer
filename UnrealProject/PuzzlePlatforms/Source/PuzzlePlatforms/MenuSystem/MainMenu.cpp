@@ -124,6 +124,7 @@ void UMainMenu::JoinToServer()
 }
 
 
+
 /// We take out it in MenuWidget class for better Architectur
 /*void UMainMenu::SetGameInstanceInterface(IMenuInterface * GameInstanceInterface)
 {

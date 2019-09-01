@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "OnlineSessionInterface.h"
+
 #include "PlatformTrigger.h"
 #include "MenuSystem/MenuInterface.h"
 #include "PuzzlePlatformsGameInstance.generated.h"
@@ -58,5 +60,17 @@ private:
 
 	APlayerController* PlayerController = nullptr;
 
+private:
+
+	// Online Session Interface
+
+	// CallBack create
+	void OnCreateSessionComplete(FName SessionName, bool Success);
+
+	void OnDestroySessionComplete(FName SessionName, bool Success);
+
+	void CreateSession();
+
+	IOnlineSessionPtr SessionInterface;
 
 };
