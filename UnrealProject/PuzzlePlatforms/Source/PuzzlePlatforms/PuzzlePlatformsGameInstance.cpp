@@ -55,7 +55,20 @@ void UPuzzlePlatformsGameInstance::Init()
 		{
 			SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(this, &UPuzzlePlatformsGameInstance::OnCreateSessionComplete);
 			SessionInterface->OnDestroySessionCompleteDelegates.AddUObject(this, &UPuzzlePlatformsGameInstance::OnDestroySessionComplete);
+			SessionInterface->OnFindSessionsCompleteDelegates.AddUObject(this, &UPuzzlePlatformsGameInstance::OnFindSessionComplete);
 			//LOG_S(FString::Printf(TEXT("Session Iterface Name = %s"), *SessionInterface.ToSharedR)
+
+
+			SessionSearch = MakeShareable(new FOnlineSessionSearch());
+			SessionSearch->bIsLanQuery = true;
+			if (SessionSearch.IsValid())
+			{
+				int32 Time = int32(GetWorld()->GetTimeSeconds());
+				LOG_S(FString("Star Find Session"));
+				LOG_I(Time);
+				SessionInterface->FindSessions(0, SessionSearch.ToSharedRef());
+			}
+
 		}
 	}
 	else
@@ -104,11 +117,13 @@ void UPuzzlePlatformsGameInstance::Host()
 		auto ExistingSession = SessionInterface->GetNamedSession(SESSION_NAME);
 		if (ExistingSession != nullptr)
 		{
+			//LOG_S(FString("DestroySession_Start"));
 			SessionInterface->DestroySession(SESSION_NAME);
+			//LOG_S(FString("DestroySession_End"));
 		}
 		else
 		{
-			CreateSession();
+			this->CreateSession();
 		}
 	}
 
@@ -145,8 +160,39 @@ void UPuzzlePlatformsGameInstance::OnDestroySessionComplete(FName SessionName, b
 {
 	if (Success)
 	{
-		CreateSession();
+		//LOG_S(FString("DestroySessionDelegate_Start"));
+		this->CreateSession();
+		//LOG_S(FString("DestroySessionDelegate_End"));
 	}
+}
+
+void UPuzzlePlatformsGameInstance::OnFindSessionComplete(bool Sucess)
+{
+	if (Sucess && SessionSearch.IsValid())
+	{
+		int32 Time = int32(GetWorld()->GetTimeSeconds());
+		LOG_S(FString("Finsh Find Session"));
+		for (auto& searchResult : SessionSearch->SearchResults)
+		{
+			LOG_S(FString::Printf(TEXT("Session Name = %s"), *searchResult.GetSessionIdStr()));
+		}
+	
+		LOG_I(Time);
+	}
+
+	/// Sucess in every case = true if this function (OnFindSessionComplete()) is completed, that's why we don't need [ else{} ]
+	/*else
+	{
+		int32 Time = int32(GetWorld()->GetTimeSeconds());
+		LOG_S(FString("Finsh Find Session FAIL"));
+		for (auto& searchResult : SessionSearch->SearchResults)
+		{
+			LOG_S(FString::Printf(TEXT("Session Name = %s"), *searchResult.GetSessionIdStr()));
+		}
+		LOG_I(Time);
+	}*/
+	
+	
 }
 
 void UPuzzlePlatformsGameInstance::CreateSession()
@@ -154,6 +200,9 @@ void UPuzzlePlatformsGameInstance::CreateSession()
 	if (SessionInterface.IsValid())
 	{
 		FOnlineSessionSettings SessionSettings;
+		SessionSettings.bIsLANMatch = true;
+		SessionSettings.bShouldAdvertise = true;
+		SessionSettings.NumPublicConnections = 2;
 		SessionInterface->CreateSession(0, SESSION_NAME, SessionSettings); // CallBack OnCreateSessionComplete(); 
 	}
 

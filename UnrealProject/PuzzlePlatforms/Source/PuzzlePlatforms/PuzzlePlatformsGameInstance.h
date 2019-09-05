@@ -69,7 +69,11 @@ private:
 
 	void OnDestroySessionComplete(FName SessionName, bool Success);
 
+	void OnFindSessionComplete(bool Sucess);
+
 	void CreateSession();
+
+	TSharedPtr<FOnlineSessionSearch> SessionSearch;
 
 	IOnlineSessionPtr SessionInterface;
 
