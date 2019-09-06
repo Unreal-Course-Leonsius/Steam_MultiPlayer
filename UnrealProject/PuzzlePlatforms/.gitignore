@@ -239,4 +239,4 @@ DerivedDataCache/*
 
 
 # Zip File
-*.zip
+/../../Steamworks_zip/*
