@@ -41,6 +41,8 @@ public:
 	/// For InGameMenu
 	virtual void ReLoadMainMenu() override;
 
+	virtual void RefreshServerList() override;
+
 private:
 
 	/// we take this code in to MainMenu
