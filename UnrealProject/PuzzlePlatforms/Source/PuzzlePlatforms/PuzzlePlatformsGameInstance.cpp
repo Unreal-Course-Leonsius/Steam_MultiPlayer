@@ -58,17 +58,6 @@ void UPuzzlePlatformsGameInstance::Init()
 			SessionInterface->OnFindSessionsCompleteDelegates.AddUObject(this, &UPuzzlePlatformsGameInstance::OnFindSessionComplete);
 			//LOG_S(FString::Printf(TEXT("Session Iterface Name = %s"), *SessionInterface.ToSharedR)
 
-
-			SessionSearch = MakeShareable(new FOnlineSessionSearch());
-			SessionSearch->bIsLanQuery = true;
-			if (SessionSearch.IsValid())
-			{
-				int32 Time = int32(GetWorld()->GetTimeSeconds());
-				LOG_S(FString("Star Find Session"));
-				LOG_I(Time);
-				SessionInterface->FindSessions(0, SessionSearch.ToSharedRef());
-			}
-
 		}
 	}
 	else
@@ -166,18 +155,38 @@ void UPuzzlePlatformsGameInstance::OnDestroySessionComplete(FName SessionName, b
 	}
 }
 
+void UPuzzlePlatformsGameInstance::RefreshServerList()
+{
+	SessionSearch = MakeShareable(new FOnlineSessionSearch());
+	SessionSearch->bIsLanQuery = true;
+	if (SessionSearch.IsValid())
+	{
+		int32 Time = int32(GetWorld()->GetTimeSeconds());
+		LOG_S(FString("Star Find Session"));
+		LOG_I(Time);
+		SessionInterface->FindSessions(0, SessionSearch.ToSharedRef());
+	}
+
+}
+
 void UPuzzlePlatformsGameInstance::OnFindSessionComplete(bool Sucess)
 {
 	if (Sucess && SessionSearch.IsValid())
 	{
 		int32 Time = int32(GetWorld()->GetTimeSeconds());
 		LOG_S(FString("Finsh Find Session"));
-		for (auto& searchResult : SessionSearch->SearchResults)
+		TArray<FString> ServerNames;
+		for (const FOnlineSessionSearchResult& searchResult : SessionSearch->SearchResults)
 		{
 			LOG_S(FString::Printf(TEXT("Session Name = %s"), *searchResult.GetSessionIdStr()));
+			ServerNames.Add(searchResult.GetSessionIdStr());
 		}
-	
+		
 		LOG_I(Time);
+
+		if (!ensure(MenuLaunch != nullptr)) return;
+		MenuLaunch->SetServerList(ServerNames);
+
 	}
 
 	/// Sucess in every case = true if this function (OnFindSessionComplete()) is completed, that's why we don't need [ else{} ]
@@ -231,6 +240,7 @@ void UPuzzlePlatformsGameInstance::ReLoadMainMenu()
 
 	PlayerController->ClientTravel("/Game/MenuSystem/MainMneu", ETravelType::TRAVEL_Absolute);
 }
+
 
 
 

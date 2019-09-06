@@ -11,7 +11,7 @@
  * 
  */
 UCLASS()
-class PUZZLEPLATFORMS_API UServerRow : public UUserWidget
+class PUZZLEPLATFORMS_API UServerRow : public UMenuWidget
 {
 	GENERATED_BODY()
 	
@@ -20,16 +20,16 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* ServerName;
 	
-	/*UPROPERTY(meta = (BindWidget))
-	class UButton* ServerButton;*/
+	UPROPERTY(meta = (BindWidget))
+	class UButton* ServerButton;
 
 
-	/*UFUNCTION()
-	void SelectSessionID();*/
+	UFUNCTION()
+	void SelectSessionID();
 	
 protected:
 
-	//virtual bool Initialize() override;
+	virtual bool Initialize() override;
 	
 
 };

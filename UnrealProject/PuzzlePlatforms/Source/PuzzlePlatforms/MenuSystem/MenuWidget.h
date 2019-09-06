@@ -27,5 +27,5 @@ public:
 	
 	void SetGameInstanceInterface(IMenuInterface* GameInstaceInterface);
 
-	
+	IMenuInterface* GetGameInstanceInterface();
 };

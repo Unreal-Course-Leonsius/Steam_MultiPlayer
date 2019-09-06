@@ -18,6 +18,19 @@ class PUZZLEPLATFORMS_API UMainMenu : public UMenuWidget
 
 		/// Don't work in this Section
 
+public:
+
+	UMainMenu();
+
+private:
+
+	TSubclassOf<class UUserWidget> ServerRow;
+	//class UServerRow* ServerWidget = nullptr;
+
+public:
+
+	void SetServerList(TArray<FString> ServerNames);
+
 protected:
 
 	virtual bool Initialize() override;
@@ -75,7 +88,10 @@ public:
 		class UWidget* JoinMenu;
 
 	UPROPERTY(meta = (BindWidget))
-		class UEditableTextBox* IPAddressField;
+		class UPanelWidget* ServerList;
+
+	/*UPROPERTY(meta = (BindWidget))
+		class UEditableTextBox* IPAddressField;*/
 
 
 	/// We all take it out in MenuWidget class for better Architectur

@@ -7,7 +7,7 @@
 #include "Components/Button.h"
 
 
-/*bool UServerRow::Initialize()
+bool UServerRow::Initialize()
 {
 	bool Success = Super::Initialize();
 	if (!Success) return false;
@@ -26,4 +26,4 @@ void UServerRow::SelectSessionID()
 	{
 		GameInstanceInterface->Join(ServerName->GetText().ToString());
 	}
-}*/
+}
