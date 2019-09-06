@@ -57,7 +57,3 @@ void UMenuWidget::SetGameInstanceInterface(IMenuInterface * GameInstanceInterfac
 	this->GameInstanceInterface = GameInstanceInterface;
 }
 
-IMenuInterface * UMenuWidget::GetGameInstanceInterface()
-{
-	return GameInstanceInterface;
-}

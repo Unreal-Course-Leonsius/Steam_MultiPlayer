@@ -38,9 +38,8 @@ void UMainMenu::SetServerList(TArray<FString> ServerNames)
 	for (const FString& serverName : ServerNames)
 	{
 		UServerRow* ServerWidget = CreateWidget<UServerRow>(World, ServerRow);
-		ServerWidget->SetGameInstanceInterface(this->GetGameInstanceInterface());
 		ServerWidget->ServerName->SetText(FText::FromString(serverName));
-		ServerList->AddChild(ServerWidget->ServerButton);
+		ServerList->AddChild(ServerWidget);
 	}
 
 
