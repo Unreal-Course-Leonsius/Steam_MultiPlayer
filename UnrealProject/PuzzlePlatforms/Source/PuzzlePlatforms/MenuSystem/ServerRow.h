@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "MenuWidget.h"
+//#include "MenuWidget.h"
 #include "ServerRow.generated.h"
 
 /**
@@ -19,6 +19,23 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* ServerName;
+
+	UPROPERTY(meta = (BindWidget))
+	class UButton* RowButton;
+
+protected:
+
+	UFUNCTION()
+	void ClickedEvent();
+
+private:
+
+	class UMainMenu* Parent;
+	uint32 Index;
+
+public:
+
+	void SetUp(class UMainMenu* Parent, uint32 Index);
 
 
 };

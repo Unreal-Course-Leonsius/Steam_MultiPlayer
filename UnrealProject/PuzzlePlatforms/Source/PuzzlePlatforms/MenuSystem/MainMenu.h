@@ -27,9 +27,13 @@ private:
 	TSubclassOf<class UUserWidget> ServerRow;
 	//class UServerRow* ServerWidget = nullptr;
 
+	TOptional<uint32> SelectIndex;
+
 public:
 
 	void SetServerList(TArray<FString> ServerNames);
+
+	void SetSelectIndex(uint32 index);
 
 protected:
 

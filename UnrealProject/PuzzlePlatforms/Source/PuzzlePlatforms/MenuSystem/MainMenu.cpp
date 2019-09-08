@@ -34,11 +34,13 @@ void UMainMenu::SetServerList(TArray<FString> ServerNames)
 
 	ServerList->ClearChildren(); // Clear Items befor we Add new one
 	
-
-	for (const FString& serverName : ServerNames)
+	uint32 i = 0;
+	for (const FString& serverName : ServerNames) // if ServerNames is NULL Loop don't switch on
 	{
 		UServerRow* ServerWidget = CreateWidget<UServerRow>(World, ServerRow);
 		ServerWidget->ServerName->SetText(FText::FromString(serverName));
+		ServerWidget->SetUp(this, i);
+		++i;
 		ServerList->AddChild(ServerWidget);
 	}
 
@@ -152,8 +154,24 @@ void UMainMenu::OpenMainMenu()
 	MenuSwitcher->SetActiveWidget(MainMenu);
 }
 
+void UMainMenu::SetSelectIndex(uint32 index)
+{
+	SelectIndex = index;
+}
+
+
 void UMainMenu::JoinToServer()
 {
+
+	if (SelectIndex.IsSet())
+	{
+		LOG_I(SelectIndex.GetValue());
+		//UE_LOG(LogTemp, Warning, TEXT("Index = %d"), SelectIndex.GetValue());
+	}
+	else
+	{
+		LOG_S(FString("Index not Found"));
+	}
 	if (GameInstanceInterface != nullptr)
 	{
 		/*if (!ensure(IPAddressField != nullptr)) return;
