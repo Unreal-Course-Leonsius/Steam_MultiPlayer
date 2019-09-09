@@ -27,20 +27,21 @@ public:
 
 	/// For MainMenu Widget Functions
 	UFUNCTION(BlueprintCallable)
-	void LoadMainMenu();
+		void LoadMainMenu();
 
 	UFUNCTION(BlueprintCallable)
-	void InGameLoadMenu();
+		void InGameLoadMenu();
 
-	UFUNCTION(BlueprintCallable)
-	virtual void Host() override;
+	UFUNCTION(Exec)
+		virtual void Host() override;
 
-	UFUNCTION(BlueprintCallable) // UFUNCTION(Exec) to get command in Editor command with key ~
-	virtual void Join(const FString& Address) override;
+	UFUNCTION(Exec) // UFUNCTION(Exec) to get command in Editor command with key ~
+		virtual void Join(uint32 Index) override;
 
 	/// For InGameMenu
 	virtual void ReLoadMainMenu() override;
 
+	/// For Find Session
 	virtual void RefreshServerList() override;
 
 private:
@@ -66,12 +67,11 @@ private:
 
 	// Online Session Interface
 
-	// CallBack create
+	// CallBack functions
 	void OnCreateSessionComplete(FName SessionName, bool Success);
-
 	void OnDestroySessionComplete(FName SessionName, bool Success);
-
 	void OnFindSessionComplete(bool Sucess);
+	void OnJoinSessionComplete(FName SessinName, EOnJoinSessionCompleteResult::Type Result);
 
 	void CreateSession();
 

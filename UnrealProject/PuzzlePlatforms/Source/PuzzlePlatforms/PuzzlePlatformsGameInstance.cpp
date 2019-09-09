@@ -15,6 +15,8 @@
 #include "MenuSystem/MainMenu.h"
 #include "MenuSystem/InGameMenu.h"
 
+
+#define OUT
 const static FName SESSION_NAME = TEXT("My Session Game");
 
 UPuzzlePlatformsGameInstance::UPuzzlePlatformsGameInstance(const FObjectInitializer & ObjectInitializer)
@@ -56,6 +58,7 @@ void UPuzzlePlatformsGameInstance::Init()
 			SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(this, &UPuzzlePlatformsGameInstance::OnCreateSessionComplete);
 			SessionInterface->OnDestroySessionCompleteDelegates.AddUObject(this, &UPuzzlePlatformsGameInstance::OnDestroySessionComplete);
 			SessionInterface->OnFindSessionsCompleteDelegates.AddUObject(this, &UPuzzlePlatformsGameInstance::OnFindSessionComplete);
+			SessionInterface->OnJoinSessionCompleteDelegates.AddUObject(this, &UPuzzlePlatformsGameInstance::OnJoinSessionComplete);
 			//LOG_S(FString::Printf(TEXT("Session Iterface Name = %s"), *SessionInterface.ToSharedR)
 
 		}
@@ -204,6 +207,8 @@ void UPuzzlePlatformsGameInstance::OnFindSessionComplete(bool Sucess)
 	
 }
 
+
+
 void UPuzzlePlatformsGameInstance::CreateSession()
 {
 	if (SessionInterface.IsValid())
@@ -216,12 +221,26 @@ void UPuzzlePlatformsGameInstance::CreateSession()
 	}
 
 }
+ 
+
+void UPuzzlePlatformsGameInstance::Join(uint32 Index)
+{
+	if (!SessionInterface.IsValid() && !SessionSearch.IsValid()) return;
+
+	SessionInterface->JoinSession(0, SESSION_NAME, SessionSearch->SearchResults[Index]);
+
+}
 
 
-void UPuzzlePlatformsGameInstance::Join(const FString& Address)
+void UPuzzlePlatformsGameInstance::OnJoinSessionComplete(FName SessinName, EOnJoinSessionCompleteResult::Type Result)
 {
 	UEngine* Engine = GetEngine();
 	if (!ensure(Engine != nullptr)) return;
+
+	FString Address;
+
+	if (!SessionInterface.IsValid()) return;
+	bool success = SessionInterface->GetResolvedConnectString(SESSION_NAME, OUT Address);
 
 	Engine->AddOnScreenDebugMessage(0, 5, FColor::Green, FString::Printf(TEXT("Joining %s"), *Address));
 

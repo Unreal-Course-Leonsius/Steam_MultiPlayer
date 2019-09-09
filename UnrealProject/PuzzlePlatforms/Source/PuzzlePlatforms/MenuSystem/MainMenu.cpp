@@ -163,22 +163,15 @@ void UMainMenu::SetSelectIndex(uint32 index)
 void UMainMenu::JoinToServer()
 {
 
-	if (SelectIndex.IsSet())
+	if (SelectIndex.IsSet() && GameInstanceInterface != nullptr)
 	{
 		LOG_I(SelectIndex.GetValue());
 		//UE_LOG(LogTemp, Warning, TEXT("Index = %d"), SelectIndex.GetValue());
+		GameInstanceInterface->Join(SelectIndex.GetValue());
 	}
 	else
 	{
 		LOG_S(FString("Index not Found"));
-	}
-	if (GameInstanceInterface != nullptr)
-	{
-		/*if (!ensure(IPAddressField != nullptr)) return;
-		const FString& Address = IPAddressField->GetText().ToString();
-		GameInstanceInterface->Join(Address);*/
-		
-
 	}
 
 }
