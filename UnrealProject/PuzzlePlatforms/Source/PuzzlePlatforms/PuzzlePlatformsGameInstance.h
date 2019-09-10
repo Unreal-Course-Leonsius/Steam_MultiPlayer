@@ -38,6 +38,7 @@ public:
 	UFUNCTION(Exec) // UFUNCTION(Exec) to get command in Editor command with key ~
 		virtual void Join(uint32 Index) override;
 
+
 	/// For InGameMenu
 	virtual void ReLoadMainMenu() override;
 

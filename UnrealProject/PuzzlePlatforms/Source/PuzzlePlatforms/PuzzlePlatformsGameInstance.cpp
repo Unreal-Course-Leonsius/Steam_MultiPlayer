@@ -234,6 +234,7 @@ void UPuzzlePlatformsGameInstance::Join(uint32 Index)
 
 void UPuzzlePlatformsGameInstance::OnJoinSessionComplete(FName SessinName, EOnJoinSessionCompleteResult::Type Result)
 {
+	LOG_S(FString("JoinSessionComplete Function"));
 	UEngine* Engine = GetEngine();
 	if (!ensure(Engine != nullptr)) return;
 
