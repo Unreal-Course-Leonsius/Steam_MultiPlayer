@@ -24,28 +24,6 @@ UMainMenu::UMainMenu()
 	ServerRow = ServerRowBPClass.Class;
 }
 
-void UMainMenu::SetServerList(TArray<FString> ServerNames)
-{
-	if (!ensure(ServerList != nullptr)) return;
-	if (!ensure(ServerRow != nullptr)) return;
-
-	UWorld* World = GetWorld();
-	if (!ensure(World != nullptr)) return;
-
-	ServerList->ClearChildren(); // Clear Items befor we Add new one
-	
-	uint32 i = 0;
-	for (const FString& serverName : ServerNames) // if ServerNames is NULL Loop don't switch on
-	{
-		UServerRow* ServerWidget = CreateWidget<UServerRow>(World, ServerRow);
-		ServerWidget->ServerName->SetText(FText::FromString(serverName));
-		ServerWidget->SetUp(this, i);
-		++i;
-		ServerList->AddChild(ServerWidget);
-	}
-
-
-}
 
 
 bool UMainMenu::Initialize()
@@ -78,6 +56,55 @@ bool UMainMenu::Initialize()
 	//PPGameInstance = Cast<UPuzzlePlatformsGameInstance>(GetWorld()->GetGameInstance());
 
 	return true;
+
+}
+
+
+
+void UMainMenu::SetServerList(TArray<FString> ServerNames)
+{
+	if (!ensure(ServerList != nullptr)) return;
+	if (!ensure(ServerRow != nullptr)) return;
+
+	UWorld* World = GetWorld();
+	if (!ensure(World != nullptr)) return;
+
+	ServerList->ClearChildren(); // Clear Items befor we Add new one
+
+	uint32 i = 0;
+	for (const FString& serverName : ServerNames) // if ServerNames is NULL Loop don't switch on
+	{
+		UServerRow* ServerWidget = CreateWidget<UServerRow>(World, ServerRow);
+		ServerWidget->ServerName->SetText(FText::FromString(serverName));
+		ServerWidget->SetUp(this, i);
+		++i;
+		ServerList->AddChild(ServerWidget);
+	}
+
+
+}
+
+void UMainMenu::SetSelectIndex(uint32 index)
+{
+	SelectIndex = index;
+	UpdateChildren();
+}
+
+
+void UMainMenu::UpdateChildren()
+{
+	if (ServerList == nullptr) return;
+
+	for (int32 i = 0; i < ServerList->GetChildrenCount(); ++i)
+	{
+		auto Server = Cast<UServerRow>(ServerList->GetChildAt(i));
+		if (Server != nullptr)
+		{
+			// Outcome of this Line is boolean ( && is short circuit and means if 1 statemnt if false it don't check 2 statement)
+			Server->IsSelect = (SelectIndex.IsSet() && SelectIndex.GetValue() == i);
+		}
+		
+	}
 
 }
 
@@ -152,11 +179,6 @@ void UMainMenu::OpenMainMenu()
 	if (!ensure(MainMenu != nullptr)) return;
 
 	MenuSwitcher->SetActiveWidget(MainMenu);
-}
-
-void UMainMenu::SetSelectIndex(uint32 index)
-{
-	SelectIndex = index;
 }
 
 

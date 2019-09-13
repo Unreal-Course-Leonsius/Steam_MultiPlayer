@@ -29,6 +29,10 @@ private:
 
 	TOptional<uint32> SelectIndex;
 
+private:
+
+	void UpdateChildren();
+
 public:
 
 	void SetServerList(TArray<FString> ServerNames);

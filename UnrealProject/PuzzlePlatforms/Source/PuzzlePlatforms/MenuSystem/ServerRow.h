@@ -23,6 +23,9 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class UButton* RowButton;
 
+	UPROPERTY(BlueprintReadOnly)
+	bool IsSelect = false;
+
 protected:
 
 	UFUNCTION()

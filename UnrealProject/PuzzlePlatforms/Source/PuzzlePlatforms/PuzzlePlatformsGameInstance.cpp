@@ -121,32 +121,6 @@ void UPuzzlePlatformsGameInstance::Host()
 
 }
 
-void UPuzzlePlatformsGameInstance::OnCreateSessionComplete(FName SessionName, bool Success)
-{
-
-	if (!Success)
-	{
-		LOG_S(FString("Could not Create Session"));
-		return;
-	}
-
-	/// we take out this code in MainMenu
-	//SetFocuseAndCursorGameMode();
-	///
-
-	MenuLaunch->SetGameMode();
-
-	UEngine* Engine = GetEngine();
-	if (!ensure(Engine != nullptr)) return;
-
-	Engine->AddOnScreenDebugMessage(0, 2, FColor::Green, TEXT("Hosting"));
-	LOG_S(FString("Hosting"));
-
-	UWorld* World = GetWorld();
-	if (!ensure(World != nullptr)) return;
-
-	World->ServerTravel("/Game/ThirdPersonCPP/Maps/ThirdPersonExampleMap?listen");
-}
 
 void UPuzzlePlatformsGameInstance::OnDestroySessionComplete(FName SessionName, bool Success)
 {
@@ -161,9 +135,11 @@ void UPuzzlePlatformsGameInstance::OnDestroySessionComplete(FName SessionName, b
 void UPuzzlePlatformsGameInstance::RefreshServerList()
 {
 	SessionSearch = MakeShareable(new FOnlineSessionSearch());
-	SessionSearch->bIsLanQuery = true;
 	if (SessionSearch.IsValid())
 	{
+		SessionSearch->bIsLanQuery = false;  // No more need LAN, rather than Internet /// this setting not mandatory
+		SessionSearch->MaxSearchResults = 100;
+		SessionSearch->QuerySettings.Set(SEARCH_PRESENCE, true, EOnlineComparisonOp::Equals); // all this parameters we found in Doc.
 		int32 Time = int32(GetWorld()->GetTimeSeconds());
 		LOG_S(FString("Star Find Session"));
 		LOG_I(Time);
@@ -179,6 +155,9 @@ void UPuzzlePlatformsGameInstance::OnFindSessionComplete(bool Sucess)
 		int32 Time = int32(GetWorld()->GetTimeSeconds());
 		LOG_S(FString("Finsh Find Session"));
 		TArray<FString> ServerNames;
+		ServerNames.Add("Test 1");
+		ServerNames.Add("Test 2");
+		ServerNames.Add("Test 3");
 		for (const FOnlineSessionSearchResult& searchResult : SessionSearch->SearchResults)
 		{
 			LOG_S(FString::Printf(TEXT("Session Name = %s"), *searchResult.GetSessionIdStr()));
@@ -214,14 +193,41 @@ void UPuzzlePlatformsGameInstance::CreateSession()
 	if (SessionInterface.IsValid())
 	{
 		FOnlineSessionSettings SessionSettings;
-		SessionSettings.bIsLANMatch = true;
+		SessionSettings.bIsLANMatch = false; // No more need LAN, rather than Internet
 		SessionSettings.bShouldAdvertise = true;
 		SessionSettings.NumPublicConnections = 2;
+		SessionSettings.bUsesPresence = true;  // For to use Steam Lobby
 		SessionInterface->CreateSession(0, SESSION_NAME, SessionSettings); // CallBack OnCreateSessionComplete(); 
 	}
 
 }
  
+void UPuzzlePlatformsGameInstance::OnCreateSessionComplete(FName SessionName, bool Success)
+{
+
+	if (!Success)
+	{
+		LOG_S(FString("Could not Create Session"));
+		return;
+	}
+
+	/// we take out this code in MainMenu
+	//SetFocuseAndCursorGameMode();
+	///
+
+	MenuLaunch->SetGameMode();
+
+	UEngine* Engine = GetEngine();
+	if (!ensure(Engine != nullptr)) return;
+
+	Engine->AddOnScreenDebugMessage(0, 2, FColor::Green, TEXT("Hosting"));
+	LOG_S(FString("Hosting"));
+
+	UWorld* World = GetWorld();
+	if (!ensure(World != nullptr)) return;
+
+	World->ServerTravel("/Game/ThirdPersonCPP/Maps/ThirdPersonExampleMap?listen");
+}
 
 void UPuzzlePlatformsGameInstance::Join(uint32 Index)
 {
@@ -234,6 +240,7 @@ void UPuzzlePlatformsGameInstance::Join(uint32 Index)
 
 void UPuzzlePlatformsGameInstance::OnJoinSessionComplete(FName SessinName, EOnJoinSessionCompleteResult::Type Result)
 {
+
 	LOG_S(FString("JoinSessionComplete Function"));
 	UEngine* Engine = GetEngine();
 	if (!ensure(Engine != nullptr)) return;
@@ -244,6 +251,7 @@ void UPuzzlePlatformsGameInstance::OnJoinSessionComplete(FName SessinName, EOnJo
 	bool success = SessionInterface->GetResolvedConnectString(SESSION_NAME, OUT Address);
 
 	Engine->AddOnScreenDebugMessage(0, 5, FColor::Green, FString::Printf(TEXT("Joining %s"), *Address));
+	LOG_S(FString::Printf(TEXT("ADDRESS = %s"), *Address));
 
 	APlayerController* PlayerController = GetFirstLocalPlayerController();
 	if (!ensure(PlayerController != nullptr)) return;
