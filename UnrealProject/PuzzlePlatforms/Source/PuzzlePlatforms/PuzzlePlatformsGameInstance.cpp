@@ -7,10 +7,8 @@
 #include "UObject/ConstructorHelpers.h"
 #include "Blueprint/UserWidget.h"
 #include "OnlineSubsystem.h"
-//#include "OnlineSessionInterface.h"
-#include "OnlineSessionSettings.h"
 
-//#include "PlatformTrigger.h"
+
 #include "Edit_Tools/HandTools.h"
 #include "MenuSystem/MainMenu.h"
 #include "MenuSystem/InGameMenu.h"
@@ -49,6 +47,10 @@ void UPuzzlePlatformsGameInstance::Init()
 	
 	IOnlineSubsystem* Subsystem = IOnlineSubsystem::Get();
 
+	SessionSearch = MakeShareable(new FOnlineSessionSearch());
+
+	SetLanOrInternet();
+
 	if (Subsystem != nullptr)
 	{
 		LOG_S(FString::Printf(TEXT("Found Subsystem %s"), *Subsystem->GetSubsystemName().ToString()));
@@ -69,6 +71,28 @@ void UPuzzlePlatformsGameInstance::Init()
 	}
 
 }
+
+
+void UPuzzlePlatformsGameInstance::SetLanOrInternet()
+{
+	IOnlineSubsystem* Subsystem = IOnlineSubsystem::Get();
+
+	if (SessionSearch.IsValid())
+	{
+		if (Subsystem->GetSubsystemName() == "NULL")
+		{
+			SessionSearch->bIsLanQuery = true;  // No more need LAN, rather than Internet /// this setting not mandatory
+			SessionSettings.bIsLANMatch = true; // No more need LAN, rather than Internet
+		}
+		else
+		{
+			SessionSearch->bIsLanQuery = false;  /// this setting not mandatory
+			SessionSettings.bIsLANMatch = false;
+		}
+
+	}
+}
+
 
 void UPuzzlePlatformsGameInstance::LoadMainMenu()
 {
@@ -134,10 +158,9 @@ void UPuzzlePlatformsGameInstance::OnDestroySessionComplete(FName SessionName, b
 
 void UPuzzlePlatformsGameInstance::RefreshServerList()
 {
-	SessionSearch = MakeShareable(new FOnlineSessionSearch());
+	//SessionSearch = MakeShareable(new FOnlineSessionSearch());
 	if (SessionSearch.IsValid())
 	{
-		SessionSearch->bIsLanQuery = false;  // No more need LAN, rather than Internet /// this setting not mandatory
 		SessionSearch->MaxSearchResults = 100;
 		SessionSearch->QuerySettings.Set(SEARCH_PRESENCE, true, EOnlineComparisonOp::Equals); // all this parameters we found in Doc.
 		int32 Time = int32(GetWorld()->GetTimeSeconds());
@@ -154,20 +177,22 @@ void UPuzzlePlatformsGameInstance::OnFindSessionComplete(bool Sucess)
 	{
 		int32 Time = int32(GetWorld()->GetTimeSeconds());
 		LOG_S(FString("Finsh Find Session"));
-		TArray<FString> ServerNames;
-		ServerNames.Add("Test 1");
-		ServerNames.Add("Test 2");
-		ServerNames.Add("Test 3");
+		TArray<FServerData> DataServers;
 		for (const FOnlineSessionSearchResult& searchResult : SessionSearch->SearchResults)
 		{
 			LOG_S(FString::Printf(TEXT("Session Name = %s"), *searchResult.GetSessionIdStr()));
-			ServerNames.Add(searchResult.GetSessionIdStr());
+			FServerData ServerData;
+			ServerData.Name = searchResult.GetSessionIdStr();
+			ServerData.MaxPlayers = searchResult.Session.SessionSettings.NumPublicConnections;
+			ServerData.CurrentPlayers = ServerData.MaxPlayers - searchResult.Session.NumOpenPublicConnections;
+			ServerData.HostUsername = searchResult.Session.OwningUserName;
+			DataServers.Add(ServerData);
 		}
 		
 		LOG_I(Time);
 
 		if (!ensure(MenuLaunch != nullptr)) return;
-		MenuLaunch->SetServerList(ServerNames);
+		MenuLaunch->SetServerList(DataServers);
 
 	}
 
@@ -192,8 +217,6 @@ void UPuzzlePlatformsGameInstance::CreateSession()
 {
 	if (SessionInterface.IsValid())
 	{
-		FOnlineSessionSettings SessionSettings;
-		SessionSettings.bIsLANMatch = false; // No more need LAN, rather than Internet
 		SessionSettings.bShouldAdvertise = true;
 		SessionSettings.NumPublicConnections = 2;
 		SessionSettings.bUsesPresence = true;  // For to use Steam Lobby
@@ -201,6 +224,8 @@ void UPuzzlePlatformsGameInstance::CreateSession()
 	}
 
 }
+
+
  
 void UPuzzlePlatformsGameInstance::OnCreateSessionComplete(FName SessionName, bool Success)
 {

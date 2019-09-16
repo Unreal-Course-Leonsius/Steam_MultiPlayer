@@ -61,7 +61,7 @@ bool UMainMenu::Initialize()
 
 
 
-void UMainMenu::SetServerList(TArray<FString> ServerNames)
+void UMainMenu::SetServerList(TArray<FServerData> DataServers)
 {
 	if (!ensure(ServerList != nullptr)) return;
 	if (!ensure(ServerRow != nullptr)) return;
@@ -72,10 +72,14 @@ void UMainMenu::SetServerList(TArray<FString> ServerNames)
 	ServerList->ClearChildren(); // Clear Items befor we Add new one
 
 	uint32 i = 0;
-	for (const FString& serverName : ServerNames) // if ServerNames is NULL Loop don't switch on
+	for (const auto serverData : DataServers) // if ServerNames is NULL Loop don't switch on
 	{
 		UServerRow* ServerWidget = CreateWidget<UServerRow>(World, ServerRow);
-		ServerWidget->ServerName->SetText(FText::FromString(serverName));
+		ServerWidget->ServerName->SetText(FText::FromString(serverData.Name));
+		ServerWidget->HostUserName->SetText(FText::FromString(serverData.HostUsername));
+		FString FractionText = (FString::Printf(TEXT("%d / %d"), serverData.CurrentPlayers, serverData.MaxPlayers));
+		ServerWidget->ConnectionFraction->SetText(FText::FromString(FractionText));
+
 		ServerWidget->SetUp(this, i);
 		++i;
 		ServerList->AddChild(ServerWidget);

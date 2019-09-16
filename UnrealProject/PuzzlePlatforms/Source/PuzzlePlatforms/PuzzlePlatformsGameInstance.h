@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
 #include "OnlineSessionInterface.h"
+#include "OnlineSessionSettings.h"
 
 #include "PlatformTrigger.h"
 #include "MenuSystem/MenuInterface.h"
@@ -76,8 +77,14 @@ private:
 
 	void CreateSession();
 
+	void SetLanOrInternet();
+
+private:
+
 	TSharedPtr<FOnlineSessionSearch> SessionSearch;
 
 	IOnlineSessionPtr SessionInterface;
+
+	FOnlineSessionSettings SessionSettings;
 
 };

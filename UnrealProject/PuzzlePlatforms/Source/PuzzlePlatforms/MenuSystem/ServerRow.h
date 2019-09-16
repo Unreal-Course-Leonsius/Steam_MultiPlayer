@@ -21,6 +21,12 @@ public:
 	class UTextBlock* ServerName;
 
 	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* HostUserName;
+
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* ConnectionFraction;
+
+	UPROPERTY(meta = (BindWidget))
 	class UButton* RowButton;
 
 	UPROPERTY(BlueprintReadOnly)
