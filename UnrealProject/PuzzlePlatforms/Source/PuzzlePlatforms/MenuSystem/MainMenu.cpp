@@ -32,9 +32,9 @@ bool UMainMenu::Initialize()
 	if (!Success) return false;
 
 
-	/// MainMenu
+	/// MainMenu Buttons
 	if (!ensure(HostButton != nullptr)) return false;
-	HostButton->OnClicked.AddDynamic(this, &UMainMenu::HostServer);
+	HostButton->OnClicked.AddDynamic(this, &UMainMenu::OpenHostMenu);
 
 	if (!ensure(JoinButton != nullptr)) return false;
 	JoinButton->OnClicked.AddDynamic(this, &UMainMenu::OpenJoinMenu);
@@ -42,12 +42,21 @@ bool UMainMenu::Initialize()
 	if (!ensure(QuitButton != nullptr)) return false;
 	QuitButton->OnClicked.AddDynamic(this, &UMainMenu::QuitGame);
 
-	/// JoinMenu
-	if (!ensure(CancleButton != nullptr)) return false;
-	CancleButton->OnClicked.AddDynamic(this, &UMainMenu::OpenMainMenu);
 
-	if (!ensure(ConfirmJoinButton != nullptr)) return false;
-	ConfirmJoinButton->OnClicked.AddDynamic(this, &UMainMenu::JoinToServer);
+	/// HostMenu Buttons
+	if (!ensure(HostCancleButton != nullptr)) return false;
+	HostCancleButton->OnClicked.AddDynamic(this, &UMainMenu::OpenMainMenu);
+
+	if (!ensure(HostConfirmButton != nullptr)) return false;
+	HostConfirmButton->OnClicked.AddDynamic(this, &UMainMenu::HostServer);
+
+
+	/// JoinMenu
+	if (!ensure(JoinCancleButton != nullptr)) return false;
+	JoinCancleButton->OnClicked.AddDynamic(this, &UMainMenu::OpenMainMenu);
+
+	if (!ensure(JoinConfirmButton != nullptr)) return false;
+	JoinConfirmButton->OnClicked.AddDynamic(this, &UMainMenu::JoinToServer);
 
 	
 	LOG_S(FString("MainMenu Initilize"));
@@ -145,9 +154,14 @@ void UMainMenu::HostServer()
 	/// Instead of it we use Interface
 	//PPGameInstance->Host();
 
+	if (!ensure(MenuSwitcher != nullptr)) return;
+	if (!ensure(UserDesiredServerName != nullptr)) return;
+
+	FString serverName = UserDesiredServerName->GetText().ToString();
+
 	if (GameInstanceInterface != nullptr)
 	{
-		GameInstanceInterface->Host();
+		GameInstanceInterface->Host(serverName);
 	}
 }
 
@@ -200,6 +214,14 @@ void UMainMenu::JoinToServer()
 		LOG_S(FString("Index not Found"));
 	}
 
+}
+
+void UMainMenu::OpenHostMenu()
+{
+	if (!ensure(MenuSwitcher != nullptr)) return;
+	if (!ensure(HostMenu != nullptr)) return;
+
+	MenuSwitcher->SetActiveWidget(HostMenu);
 }
 
 

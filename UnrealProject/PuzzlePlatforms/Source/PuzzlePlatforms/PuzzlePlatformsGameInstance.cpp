@@ -16,6 +16,7 @@
 
 #define OUT
 const static FName SESSION_NAME = TEXT("My Session Game");
+const static FName SESSION_NAME_SETTINGS_KEY = TEXT("Server Name");
 
 UPuzzlePlatformsGameInstance::UPuzzlePlatformsGameInstance(const FObjectInitializer & ObjectInitializer)
 {
@@ -126,8 +127,10 @@ void UPuzzlePlatformsGameInstance::InGameLoadMenu()
 
 
 
-void UPuzzlePlatformsGameInstance::Host()
+void UPuzzlePlatformsGameInstance::Host(FString UserServerName)
 {
+	DesiredServerName = UserServerName;
+
 	if (SessionInterface.IsValid())
 	{
 		auto ExistingSession = SessionInterface->GetNamedSession(SESSION_NAME);
@@ -144,6 +147,20 @@ void UPuzzlePlatformsGameInstance::Host()
 	}
 
 }
+
+void UPuzzlePlatformsGameInstance::CreateSession()
+{
+	if (SessionInterface.IsValid())
+	{
+		SessionSettings.bShouldAdvertise = true;
+		SessionSettings.NumPublicConnections = 2;
+		SessionSettings.bUsesPresence = true;  // For to use Steam Lobby
+		SessionSettings.Set(SESSION_NAME_SETTINGS_KEY, DesiredServerName, EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
+		SessionInterface->CreateSession(0, SESSION_NAME, SessionSettings); // CallBack OnCreateSessionComplete(); 
+	}
+
+}
+
 
 
 void UPuzzlePlatformsGameInstance::OnDestroySessionComplete(FName SessionName, bool Success)
@@ -182,7 +199,16 @@ void UPuzzlePlatformsGameInstance::OnFindSessionComplete(bool Sucess)
 		{
 			LOG_S(FString::Printf(TEXT("Session Name = %s"), *searchResult.GetSessionIdStr()));
 			FServerData ServerData;
-			ServerData.Name = searchResult.GetSessionIdStr();
+			FString serverName;
+			if(searchResult.Session.SessionSettings.Get(SESSION_NAME_SETTINGS_KEY, serverName))
+			{
+				ServerData.Name = serverName;
+			}
+			else
+			{
+				ServerData.Name = "Could not Find ServerName";
+			}
+			//ServerData.Name = searchResult.GetSessionIdStr();
 			ServerData.MaxPlayers = searchResult.Session.SessionSettings.NumPublicConnections;
 			ServerData.CurrentPlayers = ServerData.MaxPlayers - searchResult.Session.NumOpenPublicConnections;
 			ServerData.HostUsername = searchResult.Session.OwningUserName;
@@ -211,19 +237,6 @@ void UPuzzlePlatformsGameInstance::OnFindSessionComplete(bool Sucess)
 	
 }
 
-
-
-void UPuzzlePlatformsGameInstance::CreateSession()
-{
-	if (SessionInterface.IsValid())
-	{
-		SessionSettings.bShouldAdvertise = true;
-		SessionSettings.NumPublicConnections = 2;
-		SessionSettings.bUsesPresence = true;  // For to use Steam Lobby
-		SessionInterface->CreateSession(0, SESSION_NAME, SessionSettings); // CallBack OnCreateSessionComplete(); 
-	}
-
-}
 
 
  

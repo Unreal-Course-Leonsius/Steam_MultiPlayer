@@ -34,7 +34,7 @@ public:
 		void InGameLoadMenu();
 
 	UFUNCTION(Exec)
-		virtual void Host() override;
+		virtual void Host(FString UserServerName) override;
 
 	UFUNCTION(Exec) // UFUNCTION(Exec) to get command in Editor command with key ~
 		virtual void Join(uint32 Index) override;
@@ -86,5 +86,7 @@ private:
 	IOnlineSessionPtr SessionInterface;
 
 	FOnlineSessionSettings SessionSettings;
+
+	FString DesiredServerName;
 
 };

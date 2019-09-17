@@ -75,27 +75,11 @@ protected:
 	UFUNCTION()
 	void JoinToServer();
 
+	UFUNCTION()
+	void OpenHostMenu();
+
 
 public:
-
-	/// Blueprint Buttons
-	// MainMenu
-	UPROPERTY(meta = (BindWidget))
-		class UButton* HostButton;
-
-	UPROPERTY(meta = (BindWidget))
-		class UButton* JoinButton;
-
-	UPROPERTY(meta = (BindWidget))
-		class UButton* QuitButton;
-
-	// JoinMenu
-	UPROPERTY(meta = (BindWidget))
-		class UButton* CancleButton;
-
-	UPROPERTY(meta = (BindWidget))
-		class UButton* ConfirmJoinButton;
-
 
 	/// Blueprint Widgets
 	UPROPERTY(meta = (BindWidget))
@@ -104,14 +88,47 @@ public:
 	UPROPERTY(meta = (BindWidget))
 		class UWidget* MainMenu;
 
+			
+			// MainMenu Buttons
+			UPROPERTY(meta = (BindWidget))
+				class UButton* HostButton;
+
+			UPROPERTY(meta = (BindWidget))
+				class UButton* JoinButton;
+
+			UPROPERTY(meta = (BindWidget))
+				class UButton* QuitButton;
+
+
+	UPROPERTY(meta = (BindWidget))
+		class UWidget* HostMenu;
+
+			// HostMenu Buttons
+			UPROPERTY(meta = (BindWidget))
+				class UButton* HostCancleButton;
+
+			UPROPERTY(meta = (BindWidget))
+				class UButton* HostConfirmButton;
+
+			// EditableBox
+			UPROPERTY(meta = (BindWidget))
+				class UEditableTextBox* UserDesiredServerName;
+
 	UPROPERTY(meta = (BindWidget))
 		class UWidget* JoinMenu;
 
-	UPROPERTY(meta = (BindWidget))
-		class UPanelWidget* ServerList;
 
-	/*UPROPERTY(meta = (BindWidget))
-		class UEditableTextBox* IPAddressField;*/
+			// JoinMenu Buttons
+			UPROPERTY(meta = (BindWidget))
+				class UButton* JoinCancleButton;
+
+			UPROPERTY(meta = (BindWidget))
+				class UButton* JoinConfirmButton;
+
+			// ScrollBox
+			UPROPERTY(meta = (BindWidget))
+				class UPanelWidget* ServerList;
+
 
 
 	/// We all take it out in MenuWidget class for better Architectur
