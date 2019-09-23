@@ -246,7 +246,7 @@ void UMainMenu::SetUIMode()
 	PlayerController->bShowMouseCursor = true;
 
 	/// Sam's Code
-	/*	FInputModeUIOnly InputModeData;
+	*	FInputModeUIOnly InputModeData;
 	InputModeData.SetWidgetToFocus(Menu->TakeWidget());
 	InputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock); // without it code works fine
 

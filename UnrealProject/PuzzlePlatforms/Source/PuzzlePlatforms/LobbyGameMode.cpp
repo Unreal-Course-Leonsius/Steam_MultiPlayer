@@ -18,8 +18,13 @@ void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 	{
 		UWorld* World = GetWorld();
 		if (!ensure(World != nullptr)) return;
+		
+		UEngine* Engine = GetGameInstance()->GetEngine();
+		if (!ensure(Engine != nullptr)) return;
 
-		World->ServerTravel("/Game/PuzzlePlatforms/Maps/Game");
+		Engine->AddOnScreenDebugMessage(0, 2, FColor::Green, TEXT("Hosting"));
+		bUseSeamlessTravel = true;
+		World->ServerTravel("/Game/PuzzlePlatforms/Maps/Game?listen");
 		
 	}
 	else

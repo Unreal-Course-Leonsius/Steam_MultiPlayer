@@ -23,6 +23,7 @@ public:
 
 private:
 
+
 	uint32 NumberOfPlayers = 0;
 	
 };
