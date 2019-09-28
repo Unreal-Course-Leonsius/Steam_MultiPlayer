@@ -27,19 +27,21 @@ void UMenuWidget::SetUIMode()
 	APlayerController* PlayerController = World->GetFirstPlayerController();
 
 	FInputModeUIOnly Mode;
-	Mode.SetWidgetToFocus(this->GetCachedWidget());
+	Mode.SetWidgetToFocus(this->TakeWidget());  // Mode.SetWidgetToFocus(this->GetCachedWidget());
+	Mode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 	PlayerController->SetInputMode(Mode);
 	PlayerController->bShowMouseCursor = true;
 }
 
 void UMenuWidget::SetGameMode()
 {
+	this->RemoveFromViewport();
+
 	auto World = GetWorld();
 
 	APlayerController* PlayerController = World->GetFirstPlayerController();
 
 
-	this->RemoveFromViewport();
 
 	/// This code is not work here in UUserWidget
 	//this = nullptr;

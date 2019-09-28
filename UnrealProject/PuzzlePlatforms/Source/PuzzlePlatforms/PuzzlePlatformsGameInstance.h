@@ -26,6 +26,11 @@ public:
 
 	virtual void Init();
 
+	void NetworkError(UWorld* World, UNetDriver* NetDriver, ENetworkFailure::Type FailureType, const FString& ErrorString);
+
+public:
+
+
 	/// For MainMenu Widget Functions
 	UFUNCTION(BlueprintCallable)
 		void LoadMainMenu();
@@ -52,6 +57,8 @@ private:
 	//void SetFocusAndCursorMenuMode();
 	//void SetFocuseAndCursorGameMode();
 
+	UEngine* Engine;
+
 private:
 
 	TSubclassOf<class UUserWidget> MainMenu; // Such way MainMenu = PlatformTriggerBPClass.Class Because both of they is TSubclassOf<>(); 
@@ -67,17 +74,21 @@ private:
 
 private:
 
-	// Online Session Interface
-
 	// CallBack functions
 	void OnCreateSessionComplete(FName SessionName, bool Success);
 	void OnDestroySessionComplete(FName SessionName, bool Success);
 	void OnFindSessionComplete(bool Sucess);
 	void OnJoinSessionComplete(FName SessinName, EOnJoinSessionCompleteResult::Type Result);
 
+
+	// Online Session Interface
 	void CreateSession();
 
 	void SetLanOrInternet();
+
+public:
+
+	void StartSession();
 
 private:
 

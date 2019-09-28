@@ -71,6 +71,19 @@ void UPuzzlePlatformsGameInstance::Init()
 		LOG_S(FString("Not Found Subsystem"));
 	}
 
+
+	/// If Server go off line Clinet don't crash 
+	Engine = GetEngine();
+	if (!ensure(Engine != nullptr)) return;
+	Engine->OnNetworkFailure().AddUObject(this, &UPuzzlePlatformsGameInstance::NetworkError);
+
+}
+
+void UPuzzlePlatformsGameInstance::NetworkError(UWorld* World, UNetDriver* NetDriver, ENetworkFailure::Type FailureType, const FString& ErrorString)
+{
+	// Not LoadMainMenu() function because nessesery CleintTravel() function 
+	// for attach PlayerController reload MainMenu Widget
+	ReLoadMainMenu();
 }
 
 
@@ -93,6 +106,7 @@ void UPuzzlePlatformsGameInstance::SetLanOrInternet()
 
 	}
 }
+
 
 
 void UPuzzlePlatformsGameInstance::LoadMainMenu()
@@ -153,7 +167,7 @@ void UPuzzlePlatformsGameInstance::CreateSession()
 	if (SessionInterface.IsValid())
 	{
 		SessionSettings.bShouldAdvertise = true;
-		SessionSettings.NumPublicConnections = 2;
+		SessionSettings.NumPublicConnections = 5;
 		SessionSettings.bUsesPresence = true;  // For to use Steam Lobby
 		SessionSettings.Set(SESSION_NAME_SETTINGS_KEY, DesiredServerName, EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
 		SessionInterface->CreateSession(0, SESSION_NAME, SessionSettings); // CallBack OnCreateSessionComplete(); 
@@ -255,9 +269,8 @@ void UPuzzlePlatformsGameInstance::OnCreateSessionComplete(FName SessionName, bo
 
 	MenuLaunch->SetGameMode();
 
-	UEngine* Engine = GetEngine();
-	if (!ensure(Engine != nullptr)) return;
 
+	if (!ensure(Engine != nullptr)) return;
 	Engine->AddOnScreenDebugMessage(0, 2, FColor::Green, TEXT("Hosting"));
 	LOG_S(FString("Hosting"));
 
@@ -281,14 +294,14 @@ void UPuzzlePlatformsGameInstance::OnJoinSessionComplete(FName SessinName, EOnJo
 {
 
 	LOG_S(FString("JoinSessionComplete Function"));
-	UEngine* Engine = GetEngine();
-	if (!ensure(Engine != nullptr)) return;
+
 
 	FString Address;
 
 	if (!SessionInterface.IsValid()) return;
 	bool success = SessionInterface->GetResolvedConnectString(SESSION_NAME, OUT Address);
 
+	if (!ensure(Engine != nullptr)) return;
 	Engine->AddOnScreenDebugMessage(0, 5, FColor::Green, FString::Printf(TEXT("Joining %s"), *Address));
 	LOG_S(FString::Printf(TEXT("ADDRESS = %s"), *Address));
 
@@ -308,6 +321,13 @@ void UPuzzlePlatformsGameInstance::ReLoadMainMenu()
 	PlayerController->ClientTravel("/Game/MenuSystem/MainMneu", ETravelType::TRAVEL_Absolute);
 }
 
+void UPuzzlePlatformsGameInstance::StartSession()
+{
+	if (SessionInterface.IsValid())
+	{
+		SessionInterface->StartSession(SESSION_NAME);
+	}
+}
 
 
 

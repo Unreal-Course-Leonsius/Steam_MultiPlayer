@@ -35,7 +35,7 @@ void UInGameMenu::ExitGame()
 {
 	//this->RemoveFromViewport();
 	//this->SetUIMode();
-	this->SetGameMode();
+	//this->SetGameMode();
 	if (GameInstanceInterface)
 	{
 		GameInstanceInterface->ReLoadMainMenu();
