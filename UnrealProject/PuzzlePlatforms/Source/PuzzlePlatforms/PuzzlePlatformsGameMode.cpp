@@ -22,6 +22,16 @@ APuzzlePlatformsGameMode::APuzzlePlatformsGameMode()
 	}
 }
 
+
+
+void APuzzlePlatformsGameMode::PostLogin(APlayerController* NewPlayer)
+{
+	Super::PostLogin(NewPlayer);
+
+	
+
+}
+
 /*void APuzzlePlatformsGameMode::BeginPlay()
 {
 	

@@ -2,10 +2,10 @@
 
 //#include "CoreMinimal.h"
 
-#define LOGGING
+#define LOGGING 1
 
 
-#ifdef LOGGING
+#if LOGGING
 
 #define LOG_S(x) UE_LOG(LogTemp, Warning, TEXT("STRING = %s"), *x)
 #define LOG_I(x) UE_LOG(LogTemp, Warning, TEXT("Integer = %i"), x)

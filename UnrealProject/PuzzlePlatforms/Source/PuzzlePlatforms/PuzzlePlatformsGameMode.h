@@ -14,6 +14,8 @@ class APuzzlePlatformsGameMode : public AGameModeBase
 public:
 	APuzzlePlatformsGameMode();
 
+	virtual void PostLogin(APlayerController* NewPlayer) override;
+
 	//virtual void BeginPlay() override;
 
 private:

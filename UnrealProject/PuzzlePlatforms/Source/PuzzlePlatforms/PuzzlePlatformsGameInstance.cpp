@@ -175,7 +175,37 @@ void UPuzzlePlatformsGameInstance::CreateSession()
 
 }
 
+void UPuzzlePlatformsGameInstance::OnCreateSessionComplete(FName SessionName, bool Success)
+{
 
+	if (!Success)
+	{
+		LOG_S(FString("Could not Create Session"));
+		return;
+	}
+
+	// we take out this code in MainMenu
+	//SetFocuseAndCursorGameMode();
+	//
+
+	MenuLaunch->SetGameMode();
+	LOG_S(SessionName.ToString());
+
+	if (!ensure(Engine != nullptr)) return;
+	Engine->AddOnScreenDebugMessage(0, 2, FColor::Green, TEXT("Hosting"));
+	LOG_S(FString("Hosting"));
+
+	UWorld* World = GetWorld();
+	if (!ensure(World != nullptr)) return;
+
+	SessionInterface->GetSessionSettings(SessionName);
+	//EOnlineSessionState ST = SessionInterface->GetSessionState(SessionName);
+	FString SessionState = EOnlineSessionState::ToString(SessionInterface->GetSessionState(SessionName));
+	LOG_S(FString::Printf(TEXT("SessionState = %s"), *SessionState));
+
+	World->ServerTravel("/Game/PuzzlePlatforms/Maps/Lobby?listen");
+
+}
 
 void UPuzzlePlatformsGameInstance::OnDestroySessionComplete(FName SessionName, bool Success)
 {
@@ -236,6 +266,8 @@ void UPuzzlePlatformsGameInstance::OnFindSessionComplete(bool Sucess)
 
 	}
 
+	/*LOG_S(FString::Printf(TEXT("OnFindFunction GetNamedSession = %s"), *SessionInterface->GetNamedSession(SESSION_NAME)->SessionName.ToString()));*/
+
 	/// Sucess in every case = true if this function (OnFindSessionComplete()) is completed, that's why we don't need [ else{} ]
 	/*else
 	{
@@ -254,32 +286,6 @@ void UPuzzlePlatformsGameInstance::OnFindSessionComplete(bool Sucess)
 
 
  
-void UPuzzlePlatformsGameInstance::OnCreateSessionComplete(FName SessionName, bool Success)
-{
-
-	if (!Success)
-	{
-		LOG_S(FString("Could not Create Session"));
-		return;
-	}
-
-	// we take out this code in MainMenu
-	//SetFocuseAndCursorGameMode();
-	//
-
-	MenuLaunch->SetGameMode();
-
-
-	if (!ensure(Engine != nullptr)) return;
-	Engine->AddOnScreenDebugMessage(0, 2, FColor::Green, TEXT("Hosting"));
-	LOG_S(FString("Hosting"));
-
-	UWorld* World = GetWorld();
-	if (!ensure(World != nullptr)) return;
-
-	World->ServerTravel("/Game/PuzzlePlatforms/Maps/Lobby?listen");
-	
-}
 
 void UPuzzlePlatformsGameInstance::Join(uint32 Index)
 {
