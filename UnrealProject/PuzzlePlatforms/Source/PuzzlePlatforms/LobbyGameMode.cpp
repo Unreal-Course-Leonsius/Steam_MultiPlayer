@@ -4,11 +4,28 @@
 
 #include "PuzzlePlatformsGameInstance.h"
 #include "Edit_Tools/HandTools.h"
+#include "Player/PuzzlePlatformPlayerState.h"
+#include "Player/PuzzlePlatformPlayerController.h"
 
 #include "Engine/Engine.h"
 #include "TimerManager.h"
+#include "UObject/ConstructorHelpers.h"
 
 
+
+ALobbyGameMode::ALobbyGameMode()
+{
+	// set default pawn class to our Blueprinted character
+	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/ThirdPersonCPP/Blueprints/ThirdPersonCharacter"));
+
+	if (PlayerPawnBPClass.Class != NULL)
+	{
+		DefaultPawnClass = PlayerPawnBPClass.Class;
+	}
+
+	//PlayerStateClass = APuzzlePlatformPlayerState::StaticClass();
+	//PlayerControllerClass = APuzzlePlatformPlayerController::StaticClass();
+}
 
 void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 {
@@ -18,7 +35,7 @@ void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 
 	if ((NewPlayer != nullptr) & (NumberOfPlayers >= 2))
 	{
-		GetWorldTimerManager().SetTimer(GameStart, this, &ALobbyGameMode::StartGame, 10.0);
+		//GetWorldTimerManager().SetTimer(GameStart, this, &ALobbyGameMode::StartGame, 10.0);
 	}
 	else
 	{

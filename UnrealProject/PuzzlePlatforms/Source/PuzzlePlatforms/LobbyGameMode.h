@@ -17,6 +17,8 @@ class PUZZLEPLATFORMS_API ALobbyGameMode : public APuzzlePlatformsGameMode
 
 public:
 
+	ALobbyGameMode();
+
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 
 	void Logout(AController* Exiting) override;
@@ -27,8 +29,9 @@ private:
 
 	FTimerHandle GameStart;
 
-private:
-
+public:
+	
+	UFUNCTION(BlueprintCallable, Category = "Start Game")
 	void StartGame();
 	
 };
